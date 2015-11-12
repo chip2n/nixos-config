@@ -10,11 +10,18 @@
       ./hardware-configuration.nix
     ];
 
-  # Use the GRUB 2 boot loader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
-  # Define on which hard drive you want to install Grub.
-  boot.loader.grub.device = "/dev/sda";
+  nixpkgs.config.allowUnfree = true;
+
+  # GRUB 2 boot loader
+  # boot.loader.grub.enable = true;
+  # boot.loader.grub.version = 2;
+  # boot.loader.grub.device = "/dev/sda";
+
+  # Gummiboot boot loader
+  boot.loader.gummiboot.enable = true;
+
+  # EFI configuration
+  boot.loader.efi.canTouchEfiVariables = true;
 
   # networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -38,25 +45,29 @@
     dzen2
     conky
     git
+    acpi
+    ctags
+    chromium
+    compton
+    glxinfo
   ];
 
+  hardware.bumblebee.enable = true;
+
   # List services that you want to enable:
+  services = {
+    openssh.enable = true;
 
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-  services.xserver.layout = "se";
-
-  # Enable the KDE Desktop Environment.
-  # services.xserver.displayManager.kdm.enable = true;
-  # services.xserver.desktopManager.kde4.enable = true;
-  services.xserver.windowManager.xmonad.enable = true;
-  services.xserver.windowManager.xmonad.enableContribAndExtras = true;
+    xserver = {
+      enable = true;
+      layout = "se";
+      windowManager.xmonad.enable = true;
+      windowManager.xmonad.enableContribAndExtras = true;
+      displayManager.lightdm.enable = true;
+      synaptics.enable = true;
+      synaptics.twoFingerScroll = true;
+    };
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers.chip = {
@@ -68,4 +79,15 @@
 
   # The NixOS release to be compatible with for stateful data such as databases.
   system.stateVersion = "15.09";
+
+  fonts = {
+    enableFontDir = true;
+    enableGhostscriptFonts = true;
+    fonts = with pkgs; [
+      corefonts          # Microsoft free fonts
+      inconsolata        # monospaced
+      ubuntu_font_family # Ubuntu fonts
+      unifont            # some international languages
+    ];
+  };
 }
