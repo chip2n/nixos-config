@@ -23,8 +23,8 @@
   # EFI configuration
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.hostName = "chipt0p-nixos"; # Define your hostname.
+  networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Select internationalisation properties.
   i18n = {
@@ -38,19 +38,33 @@
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
-  environment.systemPackages = with pkgs; [
-    wget
-    vim
-    dmenu
-    dzen2
-    conky
-    git
-    acpi
-    ctags
-    chromium
-    compton
-    glxinfo
-  ];
+  environment = {
+    systemPackages = with pkgs; [
+      wget
+      vim
+      dmenu
+      dzen2
+      conky
+      git
+      acpi
+      ctags
+      chromium
+      compton
+      glxinfo
+      trayer
+      rxvt_unicode
+      xfontsel
+      oxygen-gtk2
+      numix-gtk-theme
+      lxappearance
+      gtk-engine-murrine
+      xfce.thunar
+    ];
+    shellInit = ''
+      export GTK_PATH=$GTK_PATH:${pkgs.numix-gtk-theme}/share/themes/Numix/gtk-2.0
+      export GTK2_RC_FILES=$GTK2_RC_FILES:${pkgs.numix-gtk-theme}/share/themes/Numix/gtk-2.0/gtkrc
+    '';
+  };
 
   hardware.bumblebee.enable = true;
 
