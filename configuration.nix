@@ -23,6 +23,15 @@
   # EFI configuration
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # LUKS decryption
+  boot.initrd.luks.devices = [
+    {
+      device = "/dev/sda2";
+      name = "enc_pv";
+      preLVM = true;
+    }
+  ];
+
   networking.hostName = "chipt0p-nixos"; # Define your hostname.
   networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -34,7 +43,7 @@
   };
 
   # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
+  time.timeZone = "Europe/Stockholm";
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
@@ -59,6 +68,13 @@
       lxappearance
       gtk-engine-murrine
       xfce.thunar
+      dropbox
+      skype
+      zathura
+      spotify
+
+      haskell.compiler.ghc7102
+      haskellPackages.cabal-install
     ];
     shellInit = ''
       export GTK_PATH=$GTK_PATH:${pkgs.numix-gtk-theme}/share/themes/Numix/gtk-2.0
@@ -77,7 +93,8 @@
       layout = "se";
       windowManager.xmonad.enable = true;
       windowManager.xmonad.enableContribAndExtras = true;
-      displayManager.lightdm.enable = true;
+      desktopManager.xterm.enable = false;
+      displayManager.slim.enable = true;
       synaptics.enable = true;
       synaptics.twoFingerScroll = true;
     };
