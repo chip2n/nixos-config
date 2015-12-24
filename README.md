@@ -19,6 +19,7 @@ Create GPT partitions:
     Command: w
 
 Encrypt using cryptsetup:
+
     # cryptsetup luksFormat /dev/sda2
     # cryptsetup luksOpen /dev/sda2 enc_pv
     
