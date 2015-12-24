@@ -1,7 +1,9 @@
 Boot into NixOS live USB and prepare for encryption by wiping the HDD:
+
     # shred -v -n 3 /dev/sda
 
 Create GPT partitions:
+
     # gdisk /dev/sda
     ...
     Command: n
@@ -42,6 +44,7 @@ Encrypt using cryptsetup:
     # nixos-generate-config --root /mnt
 
 Add the following to /mnt/etc/nixos/configuration.nix:
+
     boot.initrd.luks.devices = [
       {
         device = "/dev/sda2";
@@ -51,12 +54,15 @@ Add the following to /mnt/etc/nixos/configuration.nix:
     ];
 
 Install NixOS:
+
     # nixos-install
 
 After installation, set passwords of created users:
+
     # passwd chip
 
 Enable WPA WiFi by adding credentials to /etc/wpa_supplicant.conf
+
     network={
       ssid="Hide Your Kids, Hide Your Wi-Fi"
       psk="*****"
